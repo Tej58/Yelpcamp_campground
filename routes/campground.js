@@ -31,10 +31,15 @@ router.post("/", middleware.isLoggedIn, function(req, res){
   }
   var price = req.body.price;
   geocoder.geocode(req.body.location, function (err, data) {
-    var lat = data.results[0].geometry.location.lat;
-    var lng = data.results[0].geometry.location.lng;
-    var location = data.results[0].formatted_address;
-    var newCampground = {name: name, image: image, description: desc, price: price, author:author, location: location, lat: lat, lng: lng};
+      
+      if (data && data.results && data.results.length) { 
+            var lat = data.results[0].geometry.location.lat;
+            var lng = data.results[0].geometry.location.lng;
+            var location = data.results[0].formatted_address;
+            var newCampground = {name: name, image: image, description: desc, price: price, author:author, location: location, lat: lat, lng: lng};
+          
+      }
+   
     // Create a new campground and save to DB
     campground.create(newCampground, function(err, newlyCreated){
         if(err){
@@ -94,10 +99,14 @@ router.put("/:id", function(req, res){
               username: req.user.username
           }
           var price= req.body.price;
-           var lat = data.results[0].geometry.location.lat;
-           var lng = data.results[0].geometry.location.lng;
-           var location = data.results[0].formatted_address;
-           var newData = {name: name, price: price,location: location,lat: lat, lng: lng, image: image, description: desc, author: author};
+          
+           if (data && data.results && data.results.length) { 
+                 var lat = data.results[0].geometry.location.lat;
+                 var lng = data.results[0].geometry.location.lng;
+                var location = data.results[0].formatted_address;
+                var newData = {name: name, price: price,location: location,lat: lat, lng: lng, image: image, description: desc, author: author};
+            }
+         
            campground.findByIdAndUpdate(req.params.id, {$set: newData}, function(err, updateCampground){
                 if(err){
                     req.flash("error", err.message);
