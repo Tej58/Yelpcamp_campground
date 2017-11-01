@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+    <div class="col-md-4">
+    <h1><%= user.firstName + " " +user.lastName %> </h1>
+    <div class="thumbnail">
+        <img src="<%= user.avatar%>" alt= "user profile image">
+        <div class="caption"><a href="mailto: <%=user.email%>"><%=user.email%></a></div>
+    </div>
+        Campground Master can simplify the task of reservation management for any campground or RV resort, or any kind of hospitality or rental business. 
+        If you're still using a wall chart and paper forms, we can help you make the transition to a computerized system as quick and easy as possible.With its emphasis on ease of use and flexibility, Campground Master helps you manage your business the way you want. We encourage you to download the free demo and try our software free of charge, so you can see for yourself how simple it is to customize and operate.
+        A brief overview is presented below, but be sure to check the "Features" menu above for more information.
+    </div>
+    <div class="col-md-8">
+       <h3><%= user.username %>'s campgrounds:</h3>
+		<ul>
+		<% campgrounds.forEach(function(campground) { %>
+			<li><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a></li>
+		<% }); %>
+		</ul>
+    </div>
+<% include ../partials/footer %>
