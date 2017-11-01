@@ -14,11 +14,10 @@ var express                      = require("express"),
     
     
     //seedDB(); //seed the database
-    mongoose.connect("mongodb://localhost/yelp_camp_v11");
+   // mongoose.connect("mongodb://localhost/yelp_camp_v11");
+    mongoose.connect("mongodb://Tj:tejasunny13@ds133311.mlab.com:33311/tejacampground");
     
     
-   
- 
 //Requiring Routes
 
 var campgroundRoutes            = require("./routes/campground"),
