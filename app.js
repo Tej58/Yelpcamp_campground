@@ -22,9 +22,7 @@ var express                      = require("express"),
         cookie:{maxAge: 180 * 60 * 1000}
     }));
     
-    //seedDB(); //seed the database
-   // mongoose.connect("mongodb://localhost/yelp_camp_v11");
-   // mongoose.connect("mongodb://Tj:tejasunny13@ds133311.mlab.com:33311/tejacampground");
+
     mongoose.connect(process.env.DATABASEURL);
     
 //Requiring Routes
