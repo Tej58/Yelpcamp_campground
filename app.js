@@ -22,8 +22,8 @@ var express                      = require("express"),
         cookie:{maxAge: 180 * 60 * 1000}
     }));
     
-
-    mongoose.connect(process.env.DATABASEURL);
+    var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp_v11"
+    mongoose.connect(url);
     
 //Requiring Routes
 
