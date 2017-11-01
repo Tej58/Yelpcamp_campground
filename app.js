@@ -11,7 +11,16 @@ var express                      = require("express"),
     Comment                      = require("./models/comment"),
     User                         = require("./models/user"),
     seedDB                       = require("./seeds");
-    
+    const session = require('express-session');
+    const MongoStore = require('connect-mongo')(session);
+
+    app.use(session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: false,    
+        store: new MongoStore({ mongooseConnection: mongoose.connection }),
+        cookie:{maxAge: 180 * 60 * 1000}
+    }));
     
     //seedDB(); //seed the database
    // mongoose.connect("mongodb://localhost/yelp_camp_v11");
