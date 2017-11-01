@@ -7,7 +7,6 @@ var express             = require("express"),
     passport            = require("passport"),
     Campground          = require("../models/campground"),
     async               = require("async"),
-    nodemailer          = require("nodemailer"),
     crypto              = require("crypto");
 
 router.get("/", function(req,res){
@@ -126,27 +125,26 @@ router.post('/forgot', function(req, res, next) {
       });
     },
     function(token, user, done) {
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: 'tejakswini@gmail.com',
-          pass: 'tejasunny13'
-        }
-      });
-      var mailOptions = {
-        to: user.email,
-        from: 'tejakswini@gmail.com',
-        subject: 'Node.js Password Reset',
-        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-      };
-      smtpTransport.sendMail(mailOptions, function(err) {
-        console.log('mail sent');
-        req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-        done(err, 'done');
-      });
+       var api_key = 'key-dea8340bb08220ebab7603a346138ae9';
+        var domain = 'sandbox8fb8164757984094aa0ba1f3097e25c1.mailgun.org';
+        var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+        var data = {
+          from: 'User <postmaster@sandbox8fb8164757984094aa0ba1f3097e25c1.mailgun.org>',
+          to: user.email,
+          subject: 'Node.js Password Reset',
+          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+              'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+              'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+              'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        };
+         
+        mailgun.messages().send(data, function (error, body) {
+            console.log('mail sent');
+            req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+            done(error, 'done');
+
+        });
+
     }
   ], function(err) {
     if (err) return next(err);
@@ -189,24 +187,22 @@ router.post('/reset/:token', function(req, res) {
       });
     },
     function(user, done) {
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail', 
-        auth: {
-          user: 'tejakswini@gmail.com',
-          pass: 'tejasunny13'
-        }
-      });
-      var mailOptions = {
-        to: user.email,
-        from: 'learntocodeinfo@mail.com',
-        subject: 'Your password has been changed',
-        text: 'Hello,\n\n' +
+      var api_key = 'key-dea8340bb08220ebab7603a346138ae9';
+        var domain = 'sandbox8fb8164757984094aa0ba1f3097e25c1.mailgun.org';
+        var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+        var data = {
+          from: 'User <postmaster@sandbox8fb8164757984094aa0ba1f3097e25c1.mailgun.org>',
+          to: user.email,
+          subject: 'Your password has been changed',
+          text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
-      };
-      smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('success', 'Success! Your password has been changed.');
-        done(err);
-      });
+        };
+         mailgun.messages().send(data, function (error, body) {
+           req.flash('success', 'Success! Your password has been changed.');
+          done(error);
+
+        });
+     
     }
   ], function(err) {
     res.redirect('/campgrounds');
