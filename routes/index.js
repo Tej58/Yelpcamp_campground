@@ -129,13 +129,13 @@ router.post('/forgot', function(req, res, next) {
       var smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-          user: 'koduri1393@gmail.com',
-          pass: 'sukkUMAR!71965'
+          user: 'tejakswini@gmail.com',
+          pass: 'tejasunny13'
         }
       });
       var mailOptions = {
         to: user.email,
-        from: 'koduri1393@gmail.com',
+        from: 'tejakswini@gmail.com',
         subject: 'Node.js Password Reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -192,8 +192,8 @@ router.post('/reset/:token', function(req, res) {
       var smtpTransport = nodemailer.createTransport({
         service: 'Gmail', 
         auth: {
-          user: 'learntocodeinfo@gmail.com',
-          pass: process.env.GMAILPW
+          user: 'tejakswini@gmail.com',
+          pass: 'tejasunny13'
         }
       });
       var mailOptions = {
